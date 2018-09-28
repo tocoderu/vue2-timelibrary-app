@@ -1,0 +1,190 @@
+.button
+	display: inline-block
+	padding: button-padding
+	color #fff
+	text-align: center
+	white-space: nowrap
+	cursor pointer
+	font-size 18px
+	@media screen and (max-width tableWidth)
+		font-size @font-size - 16%
+	@media screen and (max-width phoneWidth)
+		font-size @font-size - 24%
+
+	&:hover
+		opacity .8
+
+	&.button--big
+		font-size 22px
+		@media screen and (max-width tableWidth)
+			font-size @font-size - 26%
+		@media screen and (max-width phoneWidth)
+			font-size @font-size - 34%
+
+
+	&.button--large
+		font-size 26px
+		@media screen and (max-width tableWidth)
+			font-size @font-size - 28%
+		@media screen and (max-width phoneWidth)
+			font-size @font-size - 36%
+
+
+	&.button--plain
+		background-color transparent
+
+		&:hover
+			color #fff
+
+
+	&.button--round
+		border-radius: button--round-border-radius
+		padding .48em 1.2em
+
+	&.button--disable
+		opacity .6
+		cursor: not-allowed
+		background-image: none
+
+.button-default
+	color linkColor
+	border: 1px solid border-base
+	background-color default-color
+
+	&.button--plain
+		color linkColor
+
+		&:hover
+			background-color linkColor
+
+.button-primary
+	background-color primary-color
+
+	&.button--plain
+		color primary-color
+		border: 1px solid primary-color
+
+		&:hover
+			background-color primary-color
+
+
+.button-success
+	background-color success-color
+
+	&.button--plain
+		color success-color
+		border: 1px solid success-color
+
+		&:hover
+			background-color success-color
+
+
+
+.button-danger
+	background-color danger-color
+
+	&.button--plain
+		color danger-color
+		border: 1px solid danger-color
+
+		&:hover
+			background-color danger-color
+
+.button-warning
+	background-color warning-color
+
+	&.button--plain
+		color warning-color
+		border: 1px solid warning-color
+
+		&:hover
+			background-color warning-color
+
+.button-light
+	background-color light-color
+
+	&.button--plain
+		color: light-color
+		border: 1px solid light-color
+
+		&:hover
+			background-color light-color
+
+
+// Another buttons:
+
+.button-close
+	display: inline-block
+	position: relative
+	width: 30px
+	height @width
+	overflow: hidden
+	cursor: pointer
+	opacity: .7
+	transition: mainTransition
+
+	&:hover
+		opacity: 1
+
+	&:before, &:after
+		content: ''
+		position: absolute
+		height: 1px
+		width: 100%
+		top: 50%
+		left: 0
+		margin-top: -1px
+		background: #000
+
+	&:before
+		transform: rotate(45deg)
+
+	&:after
+		transform: rotate(-45deg)
+
+.button-burger
+	position: relative
+	width: 34px
+	height: 16px
+	transform: rotate(0deg)
+	transition: .5s ease-in-out
+	cursor: pointer;
+
+	&:hover,
+	&:focus
+		.line-1
+			transform: translateY(-1px);
+		.line-3
+			transform: translateY(1px);
+
+	&.active
+		.line-1
+			transform: translateY(8.33px) translateX(0) rotate(45deg);
+		.line-2
+			opacity: 0;
+		.line-3
+			transform: translateY(-8.33px) translateX(0) rotate(-45deg);
+
+	.line
+		display: block
+		position: absolute
+		height: 2px
+		width: 100%
+		background-color: #333
+		border-radius: 4px;
+		opacity 1
+		left: 0
+		transform: rotate(0deg)
+		transition: mainTransition
+
+		&.line--white
+			background-color: #fff
+
+	.line-1
+		top: 0%
+
+	.line-2
+		top: 50%
+
+	.line-3
+		top: 100%
