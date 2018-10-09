@@ -130,7 +130,6 @@ export default {
       taskTitle: '',
       taskDescription: '',
       whatWatch: 'Film',
-      taskId: 3,
 
       // Total Time
       // Film
@@ -144,76 +143,72 @@ export default {
       // Tags
       tagTitle: '',
       tagMenuShow: false,
-      tagsUsed: [],
-      tags: [
-        {
-          title: 'Comedy‎',
-          use: false
-        },
-        {
-          title: 'Westerns',
-          use: false
-        },
-        {
-          title: 'Adventure',
-          use: false
-        }
-      ]
+      tagsUsed: []
     }
   },
   methods: {
+    // Add New Tag
     newTag () {
       if (this.tagTitle === '') {
         return
       }
-      this.tags.push({
+      const tag = {
         title: this.tagTitle,
-        used: false
-      })
-      // const tag = {
-      //   title: this.tagTitle,
-      // }
+        use: false
+      }
+      this.$store.dispatch('newTag', tag)
     },
+
+    // Add Used Tag
+    addTagUsed (tag) {
+      tag.use = !tag.use
+      if (tag.use) {
+        this.tagsUsed.push({
+          title: tag.title
+        })
+      } else {
+        this.tagsUsed.splice(tag.title, 1)
+      }
+    },
+
+    // New Task
     newTask () {
       if (this.taskTitle === '') {
         return
       }
+
+      // Time
       let time
       if (this.whatWatch === 'Film') {
         time = this.filmTime
       } else {
         time = this.serialTime
       }
+
       const task = {
-        id: this.taskId,
         title: this.taskTitle,
         description: this.taskDescription,
         whatWatch: this.whatWatch,
         time,
-        tagsUsed: this.tagsUsed,
+        tags: this.tagsUsed,
         completed: false,
         editing: false
       }
-      console.log(task)
+      this.$store.dispatch('newTask', task)
 
       // Reset
-      this.taskId += 1
       this.taskTitle = ''
       this.taskDescription = ''
+      // Reset for Tags
+      this.tagMenuShow = false
+      this.tagTitle = ''
       this.tagsUsed = []
-    },
-
-    addTagUsed (tag) {
-      tag.use = !tag.use
-      if (tag.use) {
-        this.tagsUsed.push(
-          tag.title
-        )
-      } else {
-        this.tagsUsed.splice(tag.title, 1)
+      for (let i = 0; i < this.tags.length; i++) {
+        this.tags[i].use = false
       }
     },
 
+    // Total Time
     getHoursAndMinutes (minutes) {
       let hours = Math.trunc(minutes / 60)
       let min = minutes % 60
@@ -221,6 +216,11 @@ export default {
     }
   },
   computed: {
+    tags () {
+      return this.$store.getters.tags
+    },
+
+    // Total Time
     filmTime () {
       let min = (this.filmHours * 60) + (this.filmMinutes * 1)
       return this.getHoursAndMinutes(min)
@@ -234,7 +234,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+//
 // Options
+//
 .option-list
   display flex
   align-items center
@@ -249,7 +251,9 @@ export default {
     &:last-child
       margin-right 0
 
+//
 // Total time
+//
 .total-time
   margin-bottom 20px
 
@@ -261,7 +265,9 @@ export default {
   max-width 80px
   margin-right 10px
 
+//
 // Tags
+//
 .tag-list
   margin-bottom 20px
 
@@ -272,9 +278,6 @@ export default {
     margin-right 0
 
 .ui-tag
-  .button-close
-    &.active
-      transform: rotate(45deg)
   &.used
     background-color: #444ce0
     color #fff
@@ -282,19 +285,25 @@ export default {
       &:before,
       &:after
         background-color: #fff
+  .button-close
+    &.active
+      transform: rotate(45deg)
 
 // Tag Menu Show
 .tag-list--menu
   display flex
   justify-content space-between
   align-items center
+
 // New Tag Input
 .tag-add--input
   margin-bottom 0
   margin-right 10px
   height 42px
 
+//
 // Total Time
+//
 .total-time
   p
     margin-bottom 6px
