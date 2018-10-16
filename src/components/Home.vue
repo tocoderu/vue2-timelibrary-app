@@ -3,130 +3,147 @@
     section
       .container
         h1.ui-title-1 Home
-        input(
-          type="text"
-          placeholder="What we will watch?"
-          v-model="taskTitle"
-          @keyup.enter="newTask"
-        )
-        textarea(
-          type="text"
-          v-model="taskDescription"
-          @keyup.enter="newTask"
-        )
-        .option-list
-          input.what-watch--radio(
-            type="radio"
-            id="radioFilm"
-            value="Film"
-            v-model="whatWatch"
-          )
-          label(
-            for="radioFilm"
-          ) Film
-          input.what-watch--radio(
-            type="radio"
-            id="radioSerial"
-            value="Serial"
-            v-model="whatWatch"
-          )
-          label(
-            for="radioSerial"
-          ) Serial
-
-        // TOTAL TIME
-        .total-time
-
-          // Film Time
-          .total-time__film(
-            v-if="whatWatch === 'Film'"
-          )
-            span.time-title Hours
-            input.time-input(
-              type="number"
-              v-model="filmHours"
+        form(@submit.prevent="onSubmit")
+          // Task title
+          .form-item(:class="{ errorInput: $v.taskTitle.$error }")
+            input(
+              type="text"
+              placeholder="What we will watch?"
+              v-model="taskTitle"
+              @change="$v.taskTitle.$touch()"
+              :class="{ error: $v.taskTitle.$error }"
             )
-            span.time-title Minutes
-            input.time-input(
-              type="number"
-              v-model="filmMinutes"
+            .error(v-if="!$v.taskTitle.required") Title is required.
+          // Task desr
+          .form-item
+            textarea(
+              type="text"
+              v-model="taskDescription"
+              @keyup.enter="newTask"
             )
 
-            p {{ filmTime }}
-
-          // Serial Time
-          .total-time__serial(
-            v-if="whatWatch === 'Serial'"
-          )
-            span.time-title How many season?
-            input.time-input(
-              type="number"
-              v-model="serialSeason"
+          // WHAT WE WATCH
+          .option-list
+            input.what-watch--radio(
+              type="radio"
+              id="radioFilm"
+              value="Film"
+              v-model="whatWatch"
             )
-            span.time-title How many series?
-            input.time-input(
-              type="number"
-              v-model="serialSeries"
+            label(
+              for="radioFilm"
+            ) Film
+            input.what-watch--radio(
+              type="radio"
+              id="radioSerial"
+              value="Serial"
+              v-model="whatWatch"
             )
-            span.time-title How long is one series? (minutes)
-            input.time-input(
-              type="number"
-              v-model="serialSeriesMinutes"
+            label(
+              for="radioSerial"
+            ) Serial
+
+          // TOTAL TIME
+          .total-time
+            // Film Time
+            .total-time__film(
+              v-if="whatWatch === 'Film'"
             )
-
-            p {{ serialTime }}
-
-        // TAG LIST
-        // Add  New Tag
-        .tag-list.tag-list--add
-          .ui-tag__wrapper(
-            @click="tagMenuShow = !tagMenuShow"
-          )
-            .ui-tag
-              span.tag-title Add New
-              span.button-close(
-                :class="{ active: !tagMenuShow }"
+              span.time-title Hours
+              input.time-input(
+                type="number"
+                v-model="filmHours"
               )
+              span.time-title Minutes
+              input.time-input(
+                type="number"
+                v-model="filmMinutes"
+              )
+              // Show time
+              p {{ filmTime }}
 
-        // Show Input
-        .tag-list.tag-list--menu(
-          v-if="tagMenuShow"
-        )
-          input.tag-add--input(
-            type="text"
-            placeholder="New tag"
-            v-model="tagTitle"
-            @keyup.enter="newTag"
-          )
-          .button.button-default(
-            @click="newTag"
-          ) Send
-
-        // All Tags
-        .tag-list
-          .ui-tag__wrapper(
-            v-for="tag in tags"
-            :key="tag.title"
-          )
-            .ui-tag(
-              @click="addTagUsed(tag)"
-              :class="{used: tag.use}"
+            // Serial Time
+            .total-time__serial(
+              v-if="whatWatch === 'Serial'"
             )
-              span.tag-title {{ tag.title }}
-              span.button-close
-        p {{tagsUsed}}
+              span.time-title How many season?
+              input.time-input(
+                type="number"
+                v-model="serialSeason"
+              )
+              span.time-title How many series?
+              input.time-input(
+                type="number"
+                v-model="serialSeries"
+              )
+              span.time-title How long is one series? (minutes)
+              input.time-input(
+                type="number"
+                v-model="serialSeriesMinutes"
+              )
+              // Show time
+              p {{ serialTime }}
 
-        .button-list
-          .button.button--round.button-primary(
-            @click="newTask"
-          ) Send
+          // TAG LIST
+
+          // Add New Tag Button
+          .tag-list.tag-list--add
+            .ui-tag__wrapper(
+              @click="tagMenuShow = !tagMenuShow"
+            )
+              .ui-tag
+                span.tag-title Add New
+                span.button-close(
+                  :class="{ active: !tagMenuShow }"
+                )
+
+          // Show Menu Input
+          transition(name="fade")
+            .tag-list.tag-list--menu(
+              v-if="tagMenuShow"
+            )
+              input.tag-add--input(
+                type="text"
+                placeholder="New tag"
+                v-model="tagTitle"
+                @keyup.enter="newTag"
+              )
+              .button.button-default(
+                @click="newTag"
+              ) Send
+
+          // Show All Tags
+          .tag-list
+            transition-group(
+              enter-active-class="animated fadeInRight"
+              leave-active-class="animated fadeOutDown"
+            )
+              .ui-tag__wrapper(
+                v-for="tag in tags"
+                :key="tag.title"
+              )
+                .ui-tag(
+                  @click="addTagUsed(tag)"
+                  :class="{used: tag.use}"
+                )
+                  span.tag-title {{ tag.title }}
+                  span.button-close
+
+          // SUBMIT
+          .button-list
+            button.button.button--round.button-primary(
+              type="submit"
+              :disabled="submitStatus === 'PENDING'"
+            ) Send
 
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
+      submitStatus: null,
       taskTitle: '',
       taskDescription: '',
       whatWatch: 'Film',
@@ -146,6 +163,11 @@ export default {
       tagsUsed: []
     }
   },
+  validations: {
+    taskTitle: {
+      required
+    }
+  },
   methods: {
     // Add New Tag
     newTag () {
@@ -157,6 +179,8 @@ export default {
         use: false
       }
       this.$store.dispatch('newTag', tag)
+      // Reset
+      this.tagTitle = ''
     },
 
     // Add Used Tag
@@ -171,40 +195,57 @@ export default {
       }
     },
 
-    // New Task
-    newTask () {
-      if (this.taskTitle === '') {
-        return
-      }
+    // Submit NEW TASK
+    onSubmit () {
+      this.$v.$touch()
 
-      // Time
-      let time
-      if (this.whatWatch === 'Film') {
-        time = this.filmTime
+      if (this.$v.$invalid) {
+        console.log('ERROR')
+        this.submitStatus = 'ERROR'
       } else {
-        time = this.serialTime
-      }
+        // Vaild
+        console.log('SEND')
+        this.submitStatus = 'PENDING'
 
-      const task = {
-        title: this.taskTitle,
-        description: this.taskDescription,
-        whatWatch: this.whatWatch,
-        time,
-        tags: this.tagsUsed,
-        completed: false,
-        editing: false
-      }
-      this.$store.dispatch('newTask', task)
+        // Firebase waiting
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+        }, 500)
 
-      // Reset
-      this.taskTitle = ''
-      this.taskDescription = ''
-      // Reset for Tags
-      this.tagMenuShow = false
-      this.tagTitle = ''
-      this.tagsUsed = []
-      for (let i = 0; i < this.tags.length; i++) {
-        this.tags[i].use = false
+        // Time
+        let time
+        if (this.whatWatch === 'Film') {
+          time = this.filmTime
+        } else {
+          time = this.serialTime
+        }
+
+        // Task
+        const task = {
+          title: this.taskTitle,
+          description: this.taskDescription,
+          whatWatch: this.whatWatch,
+          time,
+          tags: this.tagsUsed,
+          completed: false,
+          editing: false
+        }
+        this.$store.dispatch('newTask', task)
+
+        // Reset
+        this.taskTitle = ''
+        this.taskDescription = ''
+        // Reset $v (validate)
+        this.$v.$reset()
+
+        // Reset for Tags
+        this.tagMenuShow = false
+        this.tagsUsed = []
+        this.tagTitle = ''
+
+        for (let i = 0; i < this.tags.length; i++) {
+          this.tags[i].use = false
+        }
       }
     },
 
@@ -318,4 +359,20 @@ export default {
   display flex
   justify-content flex-end
 
+//
+// Validate
+//
+.form-item
+  .error
+    display none
+    margin-bottom 8px
+    font-size 13.4px
+    color #fc5c65
+  &.errorInput
+    .error
+      display block
+
+input
+  &.error
+    border-color #fc5c65
 </style>
