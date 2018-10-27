@@ -134,7 +134,9 @@
             button.button.button--round.button-primary(
               type="submit"
               :disabled="submitStatus === 'PENDING'"
-            ) Send
+            )
+              span(v-if="loading") Loading...
+              span(v-else) Send
 
 </template>
 
@@ -163,6 +165,7 @@ export default {
       tagsUsed: []
     }
   },
+  // Vuelodate
   validations: {
     taskTitle: {
       required
@@ -171,6 +174,7 @@ export default {
   methods: {
     // Add New Tag
     newTag () {
+      // TODO: Vuelodate
       if (this.tagTitle === '') {
         return
       }
@@ -195,24 +199,17 @@ export default {
       }
     },
 
-    // Submit NEW TASK
+    // Submit NEW TASK (submit button)
     onSubmit () {
+      // Initialize Vuelodate
       this.$v.$touch()
-
+      // Invalid
       if (this.$v.$invalid) {
         console.log('ERROR')
         this.submitStatus = 'ERROR'
+      // Valid
       } else {
-        // Vaild
-        console.log('SEND')
-        this.submitStatus = 'PENDING'
-
-        // Firebase waiting
-        setTimeout(() => {
-          this.submitStatus = 'OK'
-        }, 500)
-
-        // Time
+        // Time (What Watch)
         let time
         if (this.whatWatch === 'Film') {
           time = this.filmTime
@@ -231,6 +228,12 @@ export default {
           editing: false
         }
         this.$store.dispatch('newTask', task)
+          .then(() => {
+            this.submitStatus = 'OK'
+          })
+          .catch(err => {
+            this.submitStatus = err.message
+          })
 
         // Reset
         this.taskTitle = ''
@@ -242,14 +245,14 @@ export default {
         this.tagMenuShow = false
         this.tagsUsed = []
         this.tagTitle = ''
-
+        // Reset tags.use + class used
         for (let i = 0; i < this.tags.length; i++) {
           this.tags[i].use = false
         }
       }
     },
 
-    // Total Time
+    // COMMON Total Time
     getHoursAndMinutes (minutes) {
       let hours = Math.trunc(minutes / 60)
       let min = minutes % 60
@@ -257,18 +260,25 @@ export default {
     }
   },
   computed: {
+    // Return all Tags
     tags () {
       return this.$store.getters.tags
     },
 
-    // Total Time
+    // FILM Total Time
     filmTime () {
       let min = (this.filmHours * 60) + (this.filmMinutes * 1)
       return this.getHoursAndMinutes(min)
     },
+    // SERIAL Total Time
     serialTime () {
       let min = this.serialSeason * this.serialSeries * this.serialSeriesMinutes
       return this.getHoursAndMinutes(min)
+    },
+
+    // Show loading status
+    loading () {
+      return this.$store.getters.loading
     }
   }
 }
