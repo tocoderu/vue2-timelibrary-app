@@ -3,7 +3,7 @@
     section
       .container
         .task-list__header
-          h1.ui-title-1 Tasks
+          h1.ui-title-1 Library
 
           // Filter
           .buttons-list
@@ -37,8 +37,9 @@
                   .task-item__header
                     .ui-checkbox-wrapper
                       input.ui-checkbox(
-                        type='checkbox'
+                        type="checkbox"
                         v-model="task.completed"
+                        @click="taskCompleted(task.id, task.completed)"
                       )
                     span.ui-title-2 {{ task.title }}
                   .task-item__body
@@ -59,7 +60,11 @@
                         .button.button--round.button-default(
                           @click="taskEdit(task.id, task.title, task.description)"
                         ) Edit
-                        .button.button--round.button-primary Done
+                        .button.button--round.button-primary(
+                          @click="taskCompleted(task.id, task.completed)"
+                        )
+                          span(v-if="task.completed") Return
+                          span(v-else) Done
 
     // Edit popup
     .ui-messageBox__wrapper(
@@ -93,12 +98,26 @@ export default {
     return {
       filter: 'active',
       editing: false,
+      completed: false,
       titleEditing: '',
       desrEditing: '',
       taskId: null
     }
   },
   methods: {
+    // Completed
+    taskCompleted (id, completed) {
+      completed ? completed = false : completed = true
+
+      this.$store.dispatch('completedTask', {
+        id,
+        completed
+      })
+        .then(() => {
+          console.log(completed)
+          // this.$store.dispatch('loadTasks')
+        })
+    },
     // Edit
     taskEdit (id, title, description) {
       this.editing = !this.editing

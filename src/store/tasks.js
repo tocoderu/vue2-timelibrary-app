@@ -19,6 +19,12 @@ export default {
       })
       task.title = title
       task.description = description
+    },
+    completedTask (state, {id, completed}) {
+      const task = state.tasks.find(t => {
+        return t.id === id
+      })
+      task.completed = completed
     }
   },
   actions: {
@@ -104,6 +110,23 @@ export default {
         })
         // Send mutation
         commit('editTask', {id, title, description})
+
+        commit('setLoading', false)
+      } catch (error) {
+        commit('setLoading', false)
+        commit('setError', error.message)
+        throw error
+      }
+    },
+    // Change Completed
+    async completedTask ({commit}, {id, completed}) {
+      commit('clearError')
+      commit('setLoading', true)
+      try {
+        // Update title & descr
+        await firebase.database().ref('tasks').child(id).update({completed})
+        // Send mutation
+        commit('completedTask', {id, completed})
 
         commit('setLoading', false)
       } catch (error) {

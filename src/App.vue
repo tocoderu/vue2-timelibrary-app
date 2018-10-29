@@ -6,7 +6,7 @@
           .navbar-content
             router-link.header-logo(
               to="/"
-            ) Film library
+            ) Time Library
             .button-burger(
               @click="menuShow = !menuShow"
               :class="{ active: menuShow }"
@@ -56,7 +56,7 @@ export default {
       if (this.checkUser) {
         return [
           {title: 'Home', url: '/'},
-          {title: 'Tasks', url: '/task'}
+          {title: 'Library', url: '/library'}
         ]
       }
       return [
