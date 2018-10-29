@@ -27,6 +27,7 @@ export default {
       commit('clearError')
       commit('setLoading', true)
       try {
+        // Get task
         const task = await firebase.database().ref('tasks').once('value')
         // Get value
         const tasks = task.val()
@@ -64,7 +65,7 @@ export default {
       commit('clearError')
       commit('setLoading', true)
       try {
-        // Use helped class
+        // Used helped class
         const newTask = new Task(
           payload.title,
           payload.description,
@@ -75,7 +76,9 @@ export default {
           payload.editing,
           getters.user.id
         )
+        // Push newTask
         const task = await firebase.database().ref('tasks').push(newTask)
+
         // Send mutation
         commit('newTask', {
           ...newTask,
@@ -109,7 +112,7 @@ export default {
         throw error
       }
     },
-    // Edit Task (button)
+    // Delete Task (button)
     async deleteTask ({commit}, id) {
       commit('clearError')
       commit('setLoading', true)
@@ -125,7 +128,7 @@ export default {
     }
   },
   getters: {
-    // Get user All Tasks
+    // Get All user Tasks
     tasks (state, getters) {
       return state.tasks.filter(task => {
         return task.user === getters.user.id

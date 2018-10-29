@@ -51,6 +51,8 @@ new Vue({
       }
       // Loading All Tasks
       this.$store.dispatch('loadTasks')
+      // Loading All Tags
+      this.$store.dispatch('loadTags')
     })
   }
 })
