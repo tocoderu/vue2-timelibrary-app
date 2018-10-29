@@ -28,7 +28,9 @@
               .ui-card.ui-card--shadow
                 .task-item__info
                   .task-item__main-info
-                    span.ui-label.ui-label--light {{ task.whatWatch }}
+                    span.ui-label(
+                      :class="[{ 'ui-label--primary': !task.completed }, { 'ui-label--light': task.completed  }]"
+                    ) {{ task.whatWatch }}
                     span Total Time: {{ task.time }}
                   span.button-close(
                     @click="deleteTask(task.id)"
@@ -60,16 +62,17 @@
                         .button.button--round.button-default(
                           @click="taskEdit(task.id, task.title, task.description)"
                         ) Edit
-                        .button.button--round.button-primary(
+                        .button.button--round(
                           @click="taskCompleted(task.id, task.completed)"
+                          :class="[{ 'button-primary': !task.completed }, { 'button-light': task.completed  }]"
                         )
                           span(v-if="task.completed") Return
                           span(v-else) Done
 
     // Edit popup
     .ui-messageBox__wrapper(
-      v-if="editing"
-      :class="{active: editing}"
+      v-if="editingPopup"
+      :class="{active: editingPopup}"
     )
       .ui-messageBox.fadeInDown
         .ui-messageBox__header
@@ -97,8 +100,8 @@ export default {
   data () {
     return {
       filter: 'active',
-      editing: false,
-      completed: false,
+      // Editing
+      editingPopup: false,
       titleEditing: '',
       desrEditing: '',
       taskId: null
@@ -120,7 +123,7 @@ export default {
     },
     // Edit
     taskEdit (id, title, description) {
-      this.editing = !this.editing
+      this.editingPopup = !this.editingPopup
       // console.log({id, title, description})
       this.taskId = id
       this.titleEditing = title
@@ -129,7 +132,7 @@ export default {
 
     // Cancel button (POPUP)
     cancelTaskEdit () {
-      this.editing = !this.editing
+      this.editingPopup = !this.editingPopup
 
       // Reset
       this.taskId = null
@@ -145,7 +148,7 @@ export default {
         title: this.titleEditing,
         description: this.desrEditing
       })
-      this.editing = !this.editing
+      this.editingPopup = !this.editingPopup
     },
 
     // Delete button
