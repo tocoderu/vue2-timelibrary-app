@@ -72,9 +72,12 @@
     // Edit popup
     .ui-messageBox__wrapper(
       v-if="editingPopup"
+      @click="cancelTaskEdit"
       :class="{active: editingPopup}"
     )
-      .ui-messageBox.fadeInDown
+      .ui-messageBox.fadeInDown(
+        @click.stop=""
+      )
         .ui-messageBox__header
           span.messageBox-title {{ titleEditing }}
           span.button-close(@click="cancelTaskEdit")
@@ -83,11 +86,13 @@
           input(
             type="text"
             v-model='titleEditing'
+            @keyup.esc="cancelTaskEdit"
           )
           p Description
           textarea(
             type="text"
             v-model='desrEditing'
+            @keyup.esc="cancelTaskEdit"
           )
         .ui-messageBox__footer
           .button.button-light(@click="cancelTaskEdit") Cancel

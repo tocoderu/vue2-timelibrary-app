@@ -133,7 +133,7 @@
               .buttons-list
                 button.button.button-primary(
                   type="submit"
-                  :disabled="submitStatus === 'PENDING'"
+                  :class="{ 'button--disable': $v.$invalid }"
                 )
                   span(v-if="loading") Loading ...
                   span(v-else) Login
