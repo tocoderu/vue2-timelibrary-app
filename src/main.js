@@ -52,6 +52,7 @@ new Vue({
         this.$store.dispatch('loadTasks')
         // Loading All Tags
         this.$store.dispatch('loadTags')
+        console.log(this.$store.getters.message.title)
       }
     })
   }

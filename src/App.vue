@@ -39,6 +39,11 @@
       .preloader2
       .preloader3
 
+    .ui-message(
+      v-if="messageShow"
+      :class="[{ 'ui-message--success': messageContext === 'success' }, { 'ui-message--danger': messageContext === 'error' }]")
+      span.message-title {{ messageTitle }}
+
 </template>
 
 <script>
@@ -73,6 +78,15 @@ export default {
     // Show loading status
     loading () {
       return this.$store.getters.loading
+    },
+    messageShow () {
+      return this.$store.getters.message.show
+    },
+    messageTitle () {
+      return this.$store.getters.message.title
+    },
+    messageContext () {
+      return this.$store.getters.message.context
     }
   }
 }

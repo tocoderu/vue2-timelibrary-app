@@ -200,8 +200,12 @@ export default {
         }
         this.$store.dispatch('registerUser', user)
           .then(() => {
-            console.log('REGISTER!')
-            this.submitStatus = 'OK'
+            let message = {
+              context: 'success',
+              title: 'You are register!'
+            }
+            this.$store.dispatch('getMessage', message)
+            // this.submitStatus = 'OK'
             this.$router.push('/')
           })
           .catch(err => {
