@@ -1,0 +1,30 @@
+.preloader__wrapper
+  width: 100%
+  height: @width
+  display flex
+  justify-content center
+  align-items center
+  position: absolute
+  top: 0
+  left: 0
+  z-index: 999
+
+.preloader__wrapper > div
+  width: rem(30px);
+  height: @width;
+  display: flex
+  margin-right 8px
+  background-color: #444ce0;
+  border-radius: 50%;
+  animation: sk-bouncedelay 1.1s infinite ease-in-out both;
+  &:last-child
+    margin-right 0
+
+// Animation delay!
+animationDelay = -0.32s;
+
+.preloader__wrapper .preloader1
+  animation-delay: animationDelay
+
+.preloader__wrapper .preloader2
+  animation-delay: animationDelay - 50%

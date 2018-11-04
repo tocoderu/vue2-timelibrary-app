@@ -134,9 +134,7 @@
             button.button.button--round.button-primary(
               type="submit"
               :disabled="submitStatus === 'PENDING'"
-            )
-              span(v-if="loading") Loading...
-              span(v-else) Send
+            ) Send
 
 </template>
 
@@ -283,11 +281,6 @@ export default {
     serialTime () {
       let min = this.serialSeason * this.serialSeries * this.serialSeriesMinutes
       return this.getHoursAndMinutes(min)
-    },
-
-    // Show loading status
-    loading () {
-      return this.$store.getters.loading
     }
   }
 }

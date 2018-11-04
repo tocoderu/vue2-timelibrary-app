@@ -144,9 +144,7 @@
                 button.button.button-primary(
                   type="submit"
                   :class="{ 'button--disable': $v.$invalid }"
-                )
-                  span(v-if="loading") Loading...
-                  span(v-else) Registration
+                ) Registration
 
               .buttons-list.buttons-list--info
                 p.typo__p(v-if="submitStatus === 'OK'") Thanks for your submission!
@@ -210,12 +208,6 @@ export default {
             this.submitStatus = err.message
           })
       }
-    }
-  },
-  computed: {
-    // Show loading status
-    loading () {
-      return this.$store.getters.loading
     }
   }
 }

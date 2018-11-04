@@ -19,7 +19,7 @@
             )
               ul.navbar-list
                 li.navbar-item(
-                  v-for="link in linkMenu"
+                  v-for="link in links"
                   :key="link.title"
                   @click="menuShow = false"
                 )
@@ -32,7 +32,13 @@
                 )
                   span.navbar-link Logout
 
-    router-view
+    router-view(:class="{blur: loading}")
+
+    .preloader__wrapper(v-if="loading")
+      .preloader1
+      .preloader2
+      .preloader3
+
 </template>
 
 <script>
@@ -52,7 +58,7 @@ export default {
     checkUser () {
       return this.$store.getters.checkUser
     },
-    linkMenu () {
+    links () {
       if (this.checkUser) {
         return [
           {title: 'Home', url: '/'},
@@ -63,6 +69,10 @@ export default {
         {title: 'Login', url: '/login'},
         {title: 'Registration', url: '/registration'}
       ]
+    },
+    // Show loading status
+    loading () {
+      return this.$store.getters.loading
     }
   }
 }

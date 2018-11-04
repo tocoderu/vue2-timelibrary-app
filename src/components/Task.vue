@@ -176,11 +176,6 @@ export default {
         return this.$store.getters.tasks
       }
       return this.filter === 'active'
-    },
-
-    // Show loading status
-    loading () {
-      return this.$store.getters.loading
     }
   }
 }
