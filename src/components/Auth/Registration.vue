@@ -222,8 +222,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+// TODO auth stylus
 .auth
   display flex
+  justify-content space-between
   flex-wrap wrap
 .auth__banner,
 .auth__form
@@ -233,6 +235,9 @@ export default {
     margin-bottom 30px
     &:last-child
       margin-bottom 0
+
+.auth__form
+  max-width 400px
 
 .form-item
   .error
