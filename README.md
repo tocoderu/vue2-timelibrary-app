@@ -1,21 +1,13 @@
-# filmlibrary
+# Time library
+Autor: [Vedees](https://github.com/vedees/) Manual in Russian: [YouTube](https://www.youtube.com/playlist?list=PLkCrmfIT6LBSn5sSboXnU8hDLeqYnUcVy) Site & Result: [timelibrary.in](http://timelibrary.in)
 
-> A Vue.js project
+> Beta - Time library
 
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
+### Build Setup
+* Remember: **Fork is better**
+```shell
+$ git clone https://github.com/vedees/timelibrary.git
+$ npm install
+$ npm run dev
+$ npm run build
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
