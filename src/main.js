@@ -32,13 +32,10 @@ new Vue({
   template: '<App/>',
   created () {
     // Configuration
-    var config = {
-      apiKey: 'AIzaSyDqCRKBj3JdCoEZpNreBAbPTw80QVlvSjU',
-      authDomain: 'time-library-41a95.firebaseapp.com',
-      databaseURL: 'https://time-library-41a95.firebaseio.com',
-      projectId: 'time-library-41a95',
-      storageBucket: 'time-library-41a95.appspot.com',
-      messagingSenderId: '117844089792'
+    let config = {
+      // -------
+      // Config HERE
+      // -------
     }
     // Firebase Initialize
     firebase.initializeApp(config)
