@@ -10,16 +10,18 @@
     nuxt
 
     // Preloader
-    .preloader__wrapper(v-if="loading")
-      .preloader1
-      .preloader2
-      .preloader3
+    no-ssr
+      .preloader__wrapper(v-if="loading")
+        .preloader1
+        .preloader2
+        .preloader3
 
     // Error & Success Messages
-    .ui-message(
-      v-if="messageShow"
-      :class="[{ 'ui-message--success': messageContext === 'success' }, { 'ui-message--danger': messageContext === 'error' }]")
-      span.message-title {{ messageTitle }}
+    no-ssr
+      .ui-message(
+        v-if="messageShow"
+        :class="[{ 'ui-message--success': messageContext === 'success' }, { 'ui-message--danger': messageContext === 'error' }]")
+        span.message-title {{ messageTitle }}
 
 </template>
 

@@ -189,9 +189,12 @@ export default {
   display flex
   justify-content space-between
   align-items center
+  flex-wrap: wrap
   margin-bottom 30px
 .ui-title-1
   margin-bottom 0
+  @media screen and (max-width: 768px)
+    margin-bottom 20px
 
 //
 // Task item
@@ -218,11 +221,20 @@ export default {
   align-items center
   justify-content space-between
   margin-bottom 20px
+  @media screen and (max-width: 768px)
+    align-items flex-start
+
   .button-close
     width 20px
     height @width
   .ui-label
     margin-right 8px
+
+.task-item__main-info
+  @media screen and (max-width: 768px)
+    display flex
+    align-items: flex-start
+    flex-direction column
 
 // Header
 .task-item__header

@@ -19,17 +19,16 @@
             li.navbar-item(
               v-for="link in links"
               :key="link.title"
-              @click="menuShow = false"
-            )
-              //- :to="`${link.url+'/'+userId}`"
+              @click="menuShow = false")
               nuxt-link.navbar-link(
                 :to="`${link.url}`"
               ) {{ link.title }}
-            li.navbar-item(
-              v-if="checkUser"
-              @click="logout"
-            )
-              span.navbar-link Logout
+            // SSR
+            no-ssr
+              li.navbar-item(
+                v-if="checkUser"
+                @click="logout")
+                span.navbar-link Logout
 </template>
 
 <script>
