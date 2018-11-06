@@ -187,12 +187,6 @@ export default {
         this.$store.dispatch('loginUser', user)
           .then(() => {
             this.$store.dispatch('loginUser', user)
-            // Message
-            let message = {
-              context: 'success',
-              title: 'You are logged!'
-            }
-            this.$store.dispatch('getMessage', message)
             // this.submitStatus = 'OK'
             this.$router.push('/')
           })

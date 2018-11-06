@@ -8,22 +8,28 @@ export default {
     }
   },
   mutations: {
-    getMessage (state, {context, title}) {
+    setSuccessMessage (state, payload) {
       state.message.show = true
-      state.message.context = context
-      state.message.title = title
+      state.message.context = 'success'
+      state.message.title = payload
     },
-    hideMessage (state) {
+    setErrorMessage (state, payload) {
+      state.message.show = true
+      state.message.context = 'error'
+      state.message.title = payload
+    },
+    unsetMessage (state) {
       state.message.show = false
     }
   },
   actions: {
-    getMessage ({commit}, {context, title}) {
-      commit('getMessage', {context, title})
+    setErrorMessage ({commit}, payload) {
+      commit('setErrorMessage', payload)
+    },
+    setSuccessMessage ({commit}, payload) {
+      commit('setSuccessMessage', payload)
       // Mutations cant be async
-      setTimeout(() => {
-        commit('hideMessage')
-      }, 2000)
+      setTimeout(() => { commit('unsetMessage') }, 3000)
     }
   },
   getters: {

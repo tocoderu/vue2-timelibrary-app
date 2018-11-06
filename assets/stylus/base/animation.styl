@@ -30,10 +30,27 @@ https://daneden.github.io/animate.css/
   animation-duration: .4s;
   animation-fill-mode: both;
 
-// Anmimated Tags
+// Tags Show
 .fadeInRight {
   animation-name: fadeInRight;
 }
+// Tags Hide
+.fadeOutDown {
+  animation-name: fadeOutDown;
+}
+// Message Show
+.fadeInDown {
+  animation-name: fadeInDown;
+}
+// Message Hide
+.fadeOutUp {
+  animation-name: fadeOutUp;
+}
+// Inputs validate
+.shake {
+  animation-name: shake;
+}
+
 @keyframes fadeInRight {
   from {
     opacity: 0;
@@ -45,9 +62,6 @@ https://daneden.github.io/animate.css/
   }
 }
 
-.fadeOutDown {
-  animation-name: fadeOutDown;
-}
 @keyframes fadeOutDown {
   from {
     opacity: 1;
@@ -58,9 +72,16 @@ https://daneden.github.io/animate.css/
   }
 }
 
-// Inputs validate
-.shake {
-  animation-name: shake;
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 @keyframes shake {
@@ -74,6 +95,16 @@ https://daneden.github.io/animate.css/
 
   20%, 40%, 60%, 80% {
     transform: translate3d(4px, 0, 0);
+  }
+}
+
+@keyframes fadeOutUp {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
   }
 }
 

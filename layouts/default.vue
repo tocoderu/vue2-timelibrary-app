@@ -18,34 +18,23 @@
 
     // Error & Success Messages
     no-ssr
-      .ui-message(
-        v-if="messageShow"
-        :class="[{ 'ui-message--success': messageContext === 'success' }, { 'ui-message--danger': messageContext === 'error' }]")
-        span.message-title {{ messageTitle }}
+      Message
 
 </template>
 
 <script>
 import Header from '@/components/System/Header.vue'
+import Message from '@/components/UI/Message.vue'
 export default {
   components: {
-    Header
+    Header, Message
   },
   computed: {
     // Show loading status
     loading () {
       return this.$store.getters.loading
-    },
-    messageShow () {
-      return this.$store.getters.message.show
-    },
-    messageTitle () {
-      return this.$store.getters.message.title
-    },
-    messageContext () {
-      return this.$store.getters.message.context
     }
-  },
+  }
 }
 </script>
 
