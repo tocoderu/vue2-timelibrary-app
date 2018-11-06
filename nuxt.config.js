@@ -52,6 +52,11 @@ module.exports = {
   modules: [
   ],
 
+  // Router Settings
+  router: {
+    middleware: 'router-auth'
+  },
+
   /*
   ** Build configuration
   */

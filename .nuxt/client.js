@@ -183,7 +183,7 @@ function resolveComponents(router) {
 }
 
 function callMiddleware (Components, context, layout) {
-  let midd = []
+  let midd = ["router-auth"]
   let unknownMiddleware = false
 
   // If layout is undefined, only call global middleware
@@ -625,11 +625,6 @@ async function mountApp(__app) {
   // Create Vue instance
   const _app = new Vue(app)
 
-  
-    // Load layout
-  const layout = NUXT.layout || 'default'
-  await _app.loadLayout(layout)
-  _app.setLayout(layout)
   
 
   // Mounts Vue app to DOM element
