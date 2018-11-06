@@ -12,6 +12,12 @@ node_modules/
 
 # Test
 /test/
+/store/test
+/plugins/test
+
+# Private
+/store/private
+/services/
 
 # Node
 /server/
