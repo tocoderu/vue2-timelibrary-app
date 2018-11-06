@@ -7,7 +7,6 @@ export default context => {
   return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        console.log('hii')
         // Check Logged
         store.dispatch('loggedUser', user),
         // Load Tasks
