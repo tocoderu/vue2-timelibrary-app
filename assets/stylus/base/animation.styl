@@ -1,24 +1,31 @@
 // Animation for Tasks
-// Active
 .taskList-enter-active, .taskList-leave-active {
   transition: all .6s;
 }
-// Enter
 .taskList-enter, .taskList-leave-to{
   opacity: 0;
   transform: translateY(10px);
 }
 
 // Animation for Tags menu
-// Active
 .fade-enter-active, .fade-leave-active {
   transition: opacity .2s;
 }
-// Enter
-.fade-enter, .fade-leave-to{
+.fade-enter, .fade-leave-to
   opacity: 0;
-}
 
+
+// Modal Animation
+// TODO to UImini
+.modal-enter
+  opacity: 0
+
+.modal-leave-active
+  opacity: 0
+
+.modal-enter .ui-messageBox,
+.modal-leave-active .ui-messageBox
+  transform: scale(1.1)
 
 /*
 Usage animate.css

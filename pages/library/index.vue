@@ -25,51 +25,45 @@
               :task="task"
               @completed="taskCompleted(task.id, task.completed)"
               @edit="taskEdit(task.id, task.title, task.description)"
-              @delete="deleteTask(task.id)"
+              @delete="deleteTask(task.id, task.title)"
             )
-
-
-    .ui-messageBox__wrapper(
+              //- deleteTask(task.id)"
+    EditModal(
       v-if="editingPopup"
-      @click="cancelTaskEdit"
-      :class="{active: editingPopup}"
+      :id="taskId"
+      :title="titleEditing"
+      :description="desrEditing"
+      @cancel="cancelTaskEdit"
+      @finish="finishTaskEdit"
     )
-      .ui-messageBox.fadeInDown(
-        @click.stop=""
-      )
-        .ui-messageBox__header
-          span.messageBox-title {{ titleEditing }}
-          span.button-close(@click="cancelTaskEdit")
-        .ui-messageBox__content
-          p Title
-          input(
-            type="text"
-            v-model='titleEditing'
-            @keyup.esc="cancelTaskEdit"
-          )
-          p Description
-          textarea(
-            type="text"
-            v-model='desrEditing'
-            @keyup.esc="cancelTaskEdit"
-          )
-        .ui-messageBox__footer
-          .button.button-light(@click="cancelTaskEdit") Cancel
-          .button.button-primary(@click="finishTaskEdit") OK
+
+    DeleteModal(
+      v-if="deletePopup"
+      :id="taskId"
+      :title="titleEditing"
+      @cancel="cancelDelete"
+      @delete="deleteSure"
+    )
 
 </template>
 
 <script>
-import TaskItem from '@/components/TaskItem.vue'
+import TaskItem from '@/components/Library/TaskItem.vue'
+import EditModal from '@/components/Library/EditModal.vue'
+import DeleteModal from '@/components/Library/DeleteModal.vue'
 export default {
   components: {
-    TaskItem
+    TaskItem,
+    EditModal,
+    DeleteModal
   },
   data () {
     return {
       filter: 'active',
       // Editing
       editingPopup: false,
+      // Delete
+      deletePopup: false,
       titleEditing: '',
       desrEditing: '',
       taskId: null
@@ -102,45 +96,59 @@ export default {
           // this.$store.dispatch('loadTasks')
         })
     },
-    // Edit
+    // EDITING
     taskEdit (id, title, description) {
-      this.editingPopup = !this.editingPopup
-      // console.log({id, title, description})
       this.taskId = id
       this.titleEditing = title
       this.desrEditing = description
+      // Menu
+      this.editingPopup = !this.editingPopup
+    },
+    cancelTaskEdit () {
+      this.taskId = null
+      this.titleEditing = ''
+      this.desrEditing = ''
+      // Menu
+      this.editingPopup = !this.editingPopup
+    },
+    finishTaskEdit (obj) {
+      let id = obj.idE
+      let title = obj.titleE
+      let description = obj.descrE
+      this.$store.dispatch('editTask', {
+        id,
+        title,
+        description,
+      })
+        // Close modal
+        .then(() => {
+          this.editingPopup = !this.editingPopup
+        })
     },
 
-    // Cancel button (POPUP)
-    cancelTaskEdit () {
-      this.editingPopup = !this.editingPopup
+    // DELETE
+    deleteTask (id, title) {
+      this.deletePopup = !this.deletePopup
+      this.taskId = id
+      this.titleEditing = title
+    },
+    cancelDelete () {
+      this.deletePopup = !this.deletePopup
 
       // Reset
       this.taskId = null
       this.titleEditing = ''
       this.desrEditing = ''
     },
-
-    // Done button
-    finishTaskEdit () {
-      // console.log(this.titleEditing)
-      this.$store.dispatch('editTask', {
-        id: this.taskId,
-        title: this.titleEditing,
-        description: this.desrEditing
-      })
-      this.editingPopup = !this.editingPopup
-    },
-
-    // Delete button
-    deleteTask (id) {
-      console.log('task deleted test ')
+    deleteSure (id) {
       this.$store.dispatch('deleteTask', id)
         .then(() => {
-          console.log('task deleted')
           this.$store.dispatch('loadTasks')
+            .then(() => {
+              this.deletePopup = !this.deletePopup
+            })
         })
-    }
+    },
   }
 }
 </script>

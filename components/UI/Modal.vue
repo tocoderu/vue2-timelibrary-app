@@ -1,31 +1,17 @@
 <template lang="pug">
-  .ui-messageBox__wrapper(
-    v-if="editingPopup"
-    @click="cancelTaskEdit"
-    :class="{active: editingPopup}"
-  )
-    .ui-messageBox.fadeInDown(
-      @click.stop=""
-    )
-      .ui-messageBox__header
-        span.messageBox-title {{ title }}
-        span.button-close(@click="cancelTaskEdit")
-      .ui-messageBox__content
-        p Title
-        input(
-          type="text"
-          v-model='titleEditing'
-          @keyup.esc="cancelTaskEdit"
-        )
-        p Description
-        textarea(
-          type="text"
-          v-model='desrEditing'
-          @keyup.esc="cancelTaskEdit"
-        )
-      .ui-messageBox__footer
-        .button.button-light(@click="cancelTaskEdit") Cancel
-        .button.button-primary(@click="finishTaskEdit") OK
+  transition(name="modal")
+    .ui-messageBox__wrapper(
+      @click="$emit('cancel')"
+      @keypress.esc="$emit('cancel')")
+      .ui-messageBox(@click.stop="")
+        .ui-messageBox__header
+          span.messageBox-title {{ title }}
+          span.button-close(@click="$emit('cancel')")
+        slot(name="content")
+          span Content
+        slot(name="footer")
+          .button.button-light(@click="$emit('cancel')") Cancel
+          .button.button-primary(@click="$emit('ok')") OK
 </template>
 
 <script>
@@ -36,6 +22,13 @@ export default {
       type: String,
       required: true
     }
+  },
+  mounted () {
+    document.body.addEventListener('keyup', e => {
+      if (e.keyCode === 27) {
+        this.$emit('cancel')
+      }
+    })
   }
 }
 </script>
