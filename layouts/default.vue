@@ -17,8 +17,7 @@
         .preloader3
 
     // Error & Success Messages
-    no-ssr
-      Message
+    Message
 
 </template>
 
