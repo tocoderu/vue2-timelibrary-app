@@ -9,6 +9,7 @@ import common from './common'
 import message from './message'
 // Private
 import user from './private/user'
+import time from './private/time'
 import tasks from './private/tasks'
 import tags from './private/tags'
 
@@ -19,6 +20,7 @@ const store = () => new Vuex.Store({
     common,
     message,
     user,
+    time,
     tasks,
     tags
   }

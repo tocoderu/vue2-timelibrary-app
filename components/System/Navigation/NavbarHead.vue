@@ -20,9 +20,16 @@
               v-for="link in links"
               :key="link.title"
               @click="menuShow = false")
+              // TODO fix props
               nuxt-link.navbar-link(
-                :to="`${link.url}`"
-              ) {{ link.title }}
+                v-if="checkUser"
+                :to="link.url + IdUser"
+              ) {{ link.title}}
+              nuxt-link.navbar-link(
+                v-else
+                :to="link.url"
+              ) {{ link.title}}
+
             // SSR
             no-ssr
               li.navbar-item(
@@ -49,16 +56,19 @@ export default {
     checkUser () {
       return this.$store.getters.checkUser
     },
+    IdUser () {
+      return this.$store.getters.user.id
+    },
     links () {
       if (this.checkUser) {
         return [
           {title: 'Home', url: '/'},
-          {title: 'Library', url: "/library"}
+          {title: 'Library', url: "/library/"}
         ]
       }
       return [
-        {title: 'Login', url: '/login'},
-        {title: 'Registration', url: '/registration'}
+        {title: 'Login', url: '/login/'},
+        {title: 'Registration', url: '/registration/'}
       ]
     }
   },
@@ -70,6 +80,3 @@ export default {
   },
 }
 </script>
-
-<style lang="stylus">
-</style>
