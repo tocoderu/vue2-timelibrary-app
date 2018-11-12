@@ -1,61 +1,34 @@
 <template lang="pug">
-  //- Copyright © 2018 Vedegis Evgenii. Contacts: https://github.com/vedees
-  //- License: https://opensource.org/licenses/Apache-2.0
-
   .content-wrapper
     section
       .container
-        h1.ui-title-1 Home
+        h1.ui-title-1 Add new {{ whatWatch }}
         form(@submit.prevent="onSubmit")
-          // Task title
-          .form-item
+          //! Task header
+          .header
             input(
               type="text"
               id="title"
               placeholder="What we will watch?"
               v-model="taskTitle"
+              style="margin-right: 12px;"
             )
-            select(v-model="what")
-              option(value="Watch") Watch
-              option(value="Read") Read
-          // Task desr
-          .form-item
-            textarea(
-              type="text"
-              v-model="taskDescription"
-              @keyup.enter="newTask"
-            )
+            select(v-model="whatWatch" style="max-width: 230px;")
+              option(
+                v-for="option in options"
+                :key="option.title"
+                :value="option.title"
+              ) {{ option.title }}
+          textarea(
+            type="text"
+            v-model="taskDescription"
+            @keyup.enter="newTask"
+          )
 
-          // WHAT WE WATCH
-          .option-list
-            input.what-watch--radio(
-              type="radio"
-              id="radioFilm"
-              value="Film"
-              v-model="whatWatch"
-            )
-            label(for="radioFilm") Film
-            input.what-watch--radio(
-              type="radio"
-              id="radioSerial"
-              value="Serial"
-              v-model="whatWatch"
-            )
-            label(for="radioSerial") Serial
-            input.what-watch--radio(
-              type="radio"
-              id="radioCourse"
-              value="Course"
-              v-model="whatWatch"
-            )
-            label(for="radioCourse") Course
-
-          // TOTAL what TIME Watch
-          .total-time( v-if="what === 'Watch'" )
-            // Film Time
-            .total-time__film(
-              v-if="whatWatch === 'Film'"
-            )
+          //* TOTAL TIME FOR WHAT WATCH
+          .total-time
+            //* Film Time
+            .time-film(v-if="whatWatch === 'Film'")
               span.time-title Hours
               input.time-input(
                 type="number"
@@ -66,13 +39,10 @@
                 type="number"
                 v-model="filmMinutes"
               )
-              // Show time
               p {{ filmTime }}
 
-            // Serial Time
-            .total-time__serial(
-              v-if="whatWatch === 'Serial'"
-            )
+            //* Serial Time
+            .time-serial(v-if="whatWatch === 'Serial'")
               span.time-title How many season?
               input.time-input(
                 type="number"
@@ -88,11 +58,30 @@
                 type="number"
                 v-model="serialSeriesMinutes"
               )
-              // Show time
               p {{ serialTime }}
 
-          .total-time( v-else )
-            p book
+            //* Course Time
+            .time-course(v-if="whatWatch === 'Course'")
+              span.time-title Average Hours
+              input.time-input(
+                type="number"
+                v-model="courseHours"
+              )
+              span.time-title Average Minutes
+              input.time-input(
+                type="number"
+                v-model="courseMinutes"
+              )
+              p {{ courseTime }}
+
+            //* Read
+            .time-book(v-if="whatWatch === 'Book'")
+              span.time-title How many pages?
+              input.time-input(
+                type="number"
+                v-model="pages"
+              )
+              p {{ readTime }}
 
           // TAG LIST
 
@@ -157,7 +146,12 @@ export default {
       submitStatus: null,
       taskTitle: '',
       taskDescription: '',
-      what: 'Watch',
+      options: [
+        {title: 'Film', count: 0},
+        {title: 'Serial', count: 0},
+        {title: 'Course', count: 0},
+        {title: 'Book', count: 0}
+      ],
       whatWatch: 'Film',
 
       // Total Time
@@ -169,6 +163,11 @@ export default {
       serialSeason: 1,
       serialSeries: 11,
       serialSeriesMinutes: 40,
+      // Course
+      courseHours: 8,
+      courseMinutes: 30,
+      // Book
+      pages: 320,
 
       // Tags
       tagTitle: '',
@@ -182,14 +181,21 @@ export default {
       return this.$store.getters.tags
     },
 
-    // FILM Total Time
+    //! Total Time
     filmTime () {
       let min = (this.filmHours * 60) + (this.filmMinutes * 1)
       return this.getHoursAndMinutes(min)
     },
-    // SERIAL Total Time
     serialTime () {
       let min = this.serialSeason * this.serialSeries * this.serialSeriesMinutes
+      return this.getHoursAndMinutes(min)
+    },
+    courseTime () {
+      let min = (this.courseHours * 60) + (this.courseMinutes * 1)
+      return this.getHoursAndMinutes(min)
+    },
+    readTime () {
+      let min = (this.pages * 250 / 130)
       return this.getHoursAndMinutes(min)
     }
   },
@@ -238,15 +244,17 @@ export default {
         console.log('ERROR')
       // Valid
       } else {
-        // Time (What Watch)
+        //* Time (What Watch) STRING
         let time
         if (this.whatWatch === 'Film') {
           time = this.filmTime
-        } else {
+        } else if (this.whatWatch === 'Serial') {
           time = this.serialTime
+        } else {
+          time = this.courseTime
         }
 
-        // Task
+        //* Task
         const task = {
           title: this.taskTitle,
           description: this.taskDescription,
@@ -281,11 +289,11 @@ export default {
       }
     },
 
-    // COMMON Total Time
+    //! COMMON Total Time
     getHoursAndMinutes (minutes) {
       this.totalTime = minutes
       let hours = Math.trunc(minutes / 60)
-      let min = minutes % 60
+      let min = (minutes % 60).toFixed(0)
       return hours + ' Hours ' + min + ' Minutes'
     }
   }
@@ -293,6 +301,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.header
+  display: flex
 //
 // Options
 //
@@ -377,19 +387,10 @@ export default {
   display flex
   justify-content flex-end
 
-// TODO fix select + btnlist
 //
 // Validate
 //
 .form-item
-  // select
-  &:first-child
-    display flex
-    input
-      margin-right 12px
-  select
-    max-width 230px
-
   .error
     display none
     margin-bottom 8px

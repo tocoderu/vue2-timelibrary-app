@@ -1,6 +1,3 @@
-// Copyright © 2018 Vedegis Evgenii. Contacts: https://github.com/vedees
-// License: https://opensource.org/licenses/Apache-2.0
-
 const pkg = require('./package')
 
 module.exports = {

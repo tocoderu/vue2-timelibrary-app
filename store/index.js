@@ -1,5 +1,10 @@
-// Copyright © 2018 Vedegis Evgenii. Contacts: https://github.com/vedees
-// License: https://opensource.org/licenses/Apache-2.0
+/*!
+ * TimeLibrary v1.0.4 - web application
+ * https://github.com/vedees/timelibrary
+ * Copyright (C) 2018 Vedegis Evgenii <vedegis@gmail.com>
+ * @license GPL-3.0
+ * https://github.com/vedees/timelibrary/master/LICENSE
+ */
 
 import Vue from 'vue'
 import Vuex from 'vuex'

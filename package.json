@@ -1,8 +1,17 @@
 {
-  "name": "filmlibrary",
-  "version": "1.0.0",
-  "description": "A Vue.js project",
-  "author": "Jack",
+  "name": "timelibrary",
+  "version": "1.0.4",
+  "description": "Time Library Web App",
+  "author": "https://github.com/vedees",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vedees/timelibrary"
+  },
+  "bugs": {
+    "url": "https://github.com/vedees/timelibrary/issues"
+  },
+  "homepage": "http://timelibrary.in",
+  "license": "GPL-3.0",
   "private": true,
   "scripts": {
     "dev": "nuxt",

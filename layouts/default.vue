@@ -1,7 +1,4 @@
 <template lang="pug">
-  //- Copyright © 2018 Vedegis Evgenii. Contacts: https://github.com/vedees
-  //- License: https://opensource.org/licenses/Apache-2.0
-
   .wrapper(:class="{blur: loading}")
     // Header + Navbar
     Header
@@ -17,7 +14,8 @@
         .preloader3
 
     // Error & Success Messages
-    Message
+    no-ssr
+      Message
 
 </template>
 
