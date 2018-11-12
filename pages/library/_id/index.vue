@@ -27,7 +27,7 @@
               @edit="taskEdit(task.id, task.title, task.description)"
               @delete="deleteTask(task.id, task.title)"
             )
-              //- deleteTask(task.id)"
+
     EditModal(
       v-if="editingPopup"
       :id="taskId"

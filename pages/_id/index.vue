@@ -117,16 +117,13 @@
               enter-active-class="animated fadeInRight"
               leave-active-class="animated fadeOutDown"
             )
-              .ui-tag__wrapper(
+              Tag(
                 v-for="tag in tags"
                 :key="tag.id"
+                :tag="tag"
+                @add="addTagUsed(tag)"
+                @delete="deleteTag(tag.id)"
               )
-                .ui-tag(
-                  @click="addTagUsed(tag)"
-                  :class="{used: tag.use}"
-                )
-                  span.tag-title {{ tag.title }}
-                  span.button-close(@click="deleteTag(tag.id)")
 
           // SUBMIT
           .button-list
@@ -138,8 +135,10 @@
 </template>
 
 <script>
+import Tag from '@/components/UI/Tag.vue'
 export default {
   components: {
+    Tag
   },
   data () {
     return {
@@ -250,8 +249,10 @@ export default {
           time = this.filmTime
         } else if (this.whatWatch === 'Serial') {
           time = this.serialTime
-        } else {
+        } else if (this.whatWatch === 'Course') {
           time = this.courseTime
+        } else {
+          time = this.readTime
         }
 
         //* Task
@@ -339,24 +340,6 @@ export default {
 //
 .tag-list
   margin-bottom 20px
-
-.ui-tag__wrapper
-  margin-right 18px
-  margin-bottom 10px
-  &:last-child
-    margin-right 0
-
-.ui-tag
-  &.used
-    background-color: #444ce0
-    color #fff
-    .button-close
-      &:before,
-      &:after
-        background-color: #fff
-  .button-close
-    &.active
-      transform: rotate(45deg)
 
 // Tag Menu Show
 .tag-list--menu
