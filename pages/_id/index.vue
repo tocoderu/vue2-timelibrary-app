@@ -295,7 +295,7 @@ export default {
       this.totalTime = minutes
       let hours = Math.trunc(minutes / 60)
       let min = (minutes % 60).toFixed(0)
-      return hours + ' Hours ' + min + ' Minutes'
+      return `${hours} Hours ${min} Minutes`
     }
   }
 }
