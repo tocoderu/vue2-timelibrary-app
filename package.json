@@ -24,7 +24,7 @@
   "dependencies": {
     "cross-env": "^5.2.0",
     "firebase": "^5.5.7",
-    "nuxt": "^2.0.0",
+    "nuxt": "^2.15.8",
     "uimini": "^1.1.0",
     "vuelidate": "^0.7.4"
   },
